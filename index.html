@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso de autos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #000000;
+            color: white;
+        }
+
+        .form-control {
+            background-color: #aa0202;
+            color: rgb(65, 64, 64);
+            border: none;
+        }
+
+        .form-label {
+            color: white;
+        }
+
+        .table-bordered {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .carTableRow:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .carTableRow:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        /*estilos para el modal*/
+        .modal-content {
+            background-color: #333; /* Cambia el color de fondo del modal */
+            color: white; /* Cambia el color del texto en el modal */
+        }
+
+        .modal-header {
+            border-bottom: none; /* Elimina el borde inferior del encabezado */
+        }
+
+        .modal-body {
+            padding: 20px; /* Añade un relleno al cuerpo del modal */
+        }
+
+        .form-label {
+            color: white; /* Cambia el color del texto de las etiquetas del formulario */
+        }
+
+        .form-control {
+            background-color: #aa0202; /* Cambia el color de fondo de los campos de entrada */
+            color: rgb(255, 255, 255); /* Cambia el color del texto en los campos de entrada */
+            border: none; /* Elimina el borde de los campos de entrada */
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+        <div class="container-fluid text-center">
+            <a class="navbar-brand d-flex align-items-center mx-auto" href="#">
+                <img src="img/log.png" alt="Logo" width="80" height="80" class="d-inline-block align-text-top me-2">
+                <h2 class="d-inline">Thunder Cars</h2>
+            </a>
+        </div>
+    </nav>
+    
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Formulario para crear un nuevo carro -->
+                <form id="crearCarroForm" class="form">
+                    <div class="mb-3">
+                        <label for="marca" class="form-label">Marca:</label>
+                        <input type="text" id="marca" name="marca" class="form-control" required>
+                        <label for="modelo">Modelo:</label>
+                        <input type="text" id="modelo" name="modelo" class="form-control" required>
+                        <label for="anio">Año:</label>
+                        <input type="number" id="anio" name="anio" class="form-control" required min="0">
+                        <label for="color">Color:</label>
+                        <input type="text" id="color" name="color" class="form-control" required>
+                        <label for="precio">Precio:</label>
+                        <input type="number" id="precio" name="precio" class="form-control" required min="0">
+                    </div>
+                    <button type="submit" id="crearCarroBtn" class="btn btn-dark">Crear Carro</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Tabla para mostrar los carros -->
+                <table class="table  table-bordered border-dark">
+                    <thead>
+                        <tr class="table-dark">
+                            <th>Id</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Año</th>
+                            <th>Color</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="carTableBody">
+                        <!-- Aquí se agregarán los datos ingresados en el formulario -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div class="modal fade" id="editarCarroModal" tabindex="-1" aria-labelledby="editarCarroModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarCarroModalLabel">Editar Carro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario para editar un carro -->
+                    <form id="editarCarroForm">
+                        <input type="hidden" id="carIdEditar" value="">
+                        <div class="mb-3">
+                            <label for="marcaEditar" class="form-label">Marca:</label>
+                            <input type="text" id="marcaEditar" name="marca" class="form-control" required>
+                            <label for="modeloEditar">Modelo:</label>
+                            <input type="text" id="modeloEditar" name="modelo" class="form-control" required>
+                            <label for="anioEditar">Año:</label>
+                            <input type="number" id="anioEditar" name="anio" class="form-control" required min="0">
+                            <label for="colorEditar">Color:</label>
+                            <input type="text" id="colorEditar" name="color" class="form-control" required>
+                            <label for="precioEditar">Precio:</label>
+                            <input type="number" id="precioEditar" name="precio" class="form-control" required min="0">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+        async function obtenerDatosCarros() {
+            try {
+                const response = await fetch('http://localhost:3000/api/carros');
+                if (!response.ok) {
+                    throw new Error('No se pudo obtener los datos de carros');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error al obtener carros:', error);
+                return [];
+            }
+        }
+
+        async function mostrarCarrosEnTabla() {
+            const tablaBody = document.getElementById('carTableBody');
+            tablaBody.innerHTML = '';
+            try {
+                const data = await obtenerDatosCarros();
+
+                data.forEach(carro => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td class="table-danger">${carro.id}</td>
+                        <td class="table-danger">${carro.marca}</td>
+                        <td class="table-danger">${carro.modelo}</td>
+                        <td class="table-danger">${carro.anio}</td>
+                        <td class="table-danger">${carro.color}</td>
+                        <td class="table-danger">${carro.precio}</td>
+                        <td class="table-danger">
+                            <button onclick="editarCarro(${carro.id})" class="btn btn-primary">Editar</button>
+
+                            <button onclick="eliminarCarro(${carro.id})" class="btn btn-danger">Eliminar</button>
+                        </td>
+                    `;
+                    tablaBody.appendChild(fila);
+                });
+            } catch (error) {
+                console.error('Error al mostrar carros en la tabla:', error);
+            }
+        }
+
+        window.onload = mostrarCarrosEnTabla;
+
+        document.getElementById('crearCarroForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Evita que el formulario se envíe por defecto
+
+            const marca = document.getElementById('marca').value;
+            const modelo = document.getElementById('modelo').value;
+            const anio = document.getElementById('anio').value;
+            const color = document.getElementById('color').value;
+            const precio = document.getElementById('precio').value;
+
+            const data = {
+                marca,
+                modelo,
+                anio,
+                color,
+                precio
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/carros', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('No se pudo agregar el carro');
+                }
+
+                this.reset();
+
+                await mostrarCarrosEnTabla();
+            } catch (error) {
+                console.error('Error al agregar el carro:', error);
+            }
+        });
+
+        async function eliminarCarro(id) {
+            try {
+                const tablaBody = document.getElementById('carTableBody');
+                const filas = tablaBody.getElementsByTagName('tr');
+
+                for (let i = 0; i < filas.length; i++) {
+                    const celdaId = filas[i].getElementsByTagName('td')[0];
+                    if (celdaId.textContent === id.toString()) {
+                        tablaBody.removeChild(filas[i]);
+                        break;
+                    }
+                }
+
+                const response = await fetch(`http://localhost:3000/api/carros/${id}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error('No se pudo eliminar el carro');
+                }
+
+                console.log(`Carro con ID ${id} eliminado`);
+            } catch (error) {
+                console.error('Error al eliminar carro:', error);
+            }
+        }
+
+    async function editarCarro(id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/carros/${id}`);
+            if (!response.ok) {
+                throw new Error('No se pudo obtener los datos del carro para editar');
+            }
+            const carro = await response.json();
+
+            // Llenar el formulario del modal con los datos del carro seleccionado
+            document.getElementById('marcaEditar').value = carro.marca;
+            document.getElementById('modeloEditar').value = carro.modelo;
+            document.getElementById('anioEditar').value = carro.anio;
+            document.getElementById('colorEditar').value = carro.color;
+            document.getElementById('precioEditar').value = carro.precio;
+
+            // Guardar el ID del carro que se está editando
+            document.getElementById('carIdEditar').value = id;
+
+            // Mostrar el modal de edición
+            const editarCarroModal = new bootstrap.Modal(document.getElementById('editarCarroModal'));
+            editarCarroModal.show();
+        } catch (error) {
+            console.error('Error al editar el carro:', error);
+        }
+    }
+        document.getElementById('editarCarroForm').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Evitar que el formulario se envíe por defecto
+
+        const id = document.getElementById('carIdEditar').value;
+        const marca = document.getElementById('marcaEditar').value;
+        const modelo = document.getElementById('modeloEditar').value;
+        const anio = document.getElementById('anioEditar').value;
+        const color = document.getElementById('colorEditar').value;
+        const precio = document.getElementById('precioEditar').value;
+
+        const data = {
+            marca,
+            modelo,
+            anio,
+            color,
+            precio
+        };
+
+        // Depuración: Imprime los datos a enviar en la consola
+
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/carros/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+
+                    throw new Error('No se pudo editar el carro');
+                }
+                
+                // Limpiar el formulario después de enviar los datos
+                this.reset();
+                // Volver a cargar la tabla con los datos actualizados después de editar el carro
+                await mostrarCarrosEnTabla();
+                // Cerrar el modal después de editar el carro
+                editarCarroModal.hide();
+            } catch (error) {
+                console.error('Error al editar el carro:', error);
+            }
+        });
+
+    </script>
+</body>
+</html>
