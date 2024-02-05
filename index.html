@@ -152,7 +152,7 @@
 <script>
         async function obtenerDatosCarros() {
             try {
-                const response = await fetch('http://localhost:3000/api/carros');
+                const response = await fetch('http://3.80.205.145:3023/api/carros');
                 if (!response.ok) {
                     throw new Error('No se pudo obtener los datos de carros');
                 }
@@ -211,7 +211,7 @@
             };
 
             try {
-                const response = await fetch('http://localhost:3000/api/carros', {
+                const response = await fetch('http://3.80.205.145:3023/api/carros', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -244,7 +244,7 @@
                     }
                 }
 
-                const response = await fetch(`http://localhost:3000/api/carros/${id}`, {
+                const response = await fetch(`http://3.80.205.145:3023/api/carros/${id}`, {
                     method: 'DELETE',
                 });
 
@@ -260,7 +260,7 @@
 
     async function editarCarro(id) {
         try {
-            const response = await fetch(`http://localhost:3000/api/carros/${id}`);
+            const response = await fetch(`http://3.80.205.145:3023/api/carros/${id}`);
             if (!response.ok) {
                 throw new Error('No se pudo obtener los datos del carro para editar');
             }
@@ -305,7 +305,7 @@
 
 
         try {
-            const response = await fetch(`http://localhost:3000/api/carros/${id}`, {
+            const response = await fetch(`http://3.80.205.145:3023/api/carros/${id}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
